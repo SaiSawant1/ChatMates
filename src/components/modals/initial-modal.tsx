@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ServerFormSchema, ServerFormValidator } from "@/lib/form-schema";
+import FileUpload from "@/components/file-upload";
 
 const InitialModal = () => {
   const [isMounted, setMounted] = React.useState(false);
@@ -61,8 +62,22 @@ const InitialModal = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-between text-center">
-                TODO:IMAGE UPLOAD
+              <div className="flex items-center justify-center text-center">
+                <FormField
+                  name="imageUrl"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
               <FormField
                 control={form.control}
