@@ -20,11 +20,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import axios from "axios";
 import { ServerFormSchema, ServerFormValidator } from "@/lib/form-schema";
 import FileUpload from "@/components/file-upload";
+import { Router } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const InitialModal = () => {
+  const router = useRouter();
   const [isMounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -42,7 +45,15 @@ const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: ServerFormValidator) => {
-    console.log(values);
+    try {
+      const { data } = await axios.post("/api/servers", values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+      console.log(data)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!isMounted) return null;

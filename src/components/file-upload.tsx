@@ -20,7 +20,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
   if (value && fileType !== "pdf") {
     return (
       <div className="relative h-20  w-20">
-        <Image fill src={value} alt="Upload" className="rounded-full" />
+        <Image fill sizes="100%" priority={true} src={value} alt="Upload" className="rounded-full" />
         <button
           type="button"
           onClick={() => onChange("")}
