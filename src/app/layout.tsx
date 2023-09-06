@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
+import ModalProvider from "@/components/providers/modal-provider";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             storageKey="chat-mates-theme"
           >
             {children}
+            <ModalProvider/>
           </ThemeProvider>
         </body>
       </html>
