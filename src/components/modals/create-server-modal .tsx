@@ -46,7 +46,7 @@ const CreateServerModal = () => {
       const { data } = await axios.post("/api/servers", values);
       form.reset();
       router.refresh();
-
+      onClose();
       console.log(data);
     } catch (error) {
       console.log(error);
