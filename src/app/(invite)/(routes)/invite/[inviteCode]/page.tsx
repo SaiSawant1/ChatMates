@@ -19,7 +19,7 @@ const InviteCodePage: React.FC<InviteCodeProps> = async ({ params }) => {
       inviteCode: params.inviteCode,
       members: {
         some: {
-          id: profile.id,
+          profileId: profile.id,
         },
       },
     },
