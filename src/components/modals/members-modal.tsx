@@ -37,6 +37,7 @@ import {
 import { MemberRole } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { error } from "console";
 
 const MembersModal = () => {
   const router = useRouter();
@@ -49,6 +50,26 @@ const MembersModal = () => {
     MODERATOR: <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500" />,
     ADMIN: <ShieldAlert className="h-4 w-4 ml-2 text-rose-500" />,
   };
+
+  const onKick = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+      const response = await axios.delete(url);
+      router.refresh();
+      onOpen("members", { server: response.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+
   const onRoleChange = async (memberId: string, role: MemberRole) => {
     try {
       setLoadingId(memberId);
@@ -56,7 +77,6 @@ const MembersModal = () => {
         url: `/api/members/${memberId}`,
         query: {
           serverId: server?.id,
-          memberId,
         },
       });
 
@@ -130,7 +150,7 @@ const MembersModal = () => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onKick(member.id)}>
                           <Gavel className="w-4 h-4 mr-2 text-rose-500" />
                           Kick
                         </DropdownMenuItem>
@@ -138,7 +158,7 @@ const MembersModal = () => {
                     </DropdownMenu>
                   </div>
                 )}
-              {loadingId !== member.id && (
+              {loadingId === member.id && (
                 <Loader2 className="animate-spin text-zinc-500 ml-auto w-4 h-4" />
               )}
             </div>
