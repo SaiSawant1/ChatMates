@@ -43,3 +43,24 @@ export async function PATCH(
     return new NextResponse(`SERVER_PATCH_ERROR ${error}`, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { serverId: string } }
+) {
+  try {
+    //get the current user profile;
+    const profile = await currentProfile();
+    if (!profile) return new NextResponse("Unauthorized", { status: 401 });
+
+    const server = await db.server.delete({
+      where: {
+        id: params.serverId,
+        profileId: profile.id,
+      },
+    });
+    return NextResponse.json(server);
+  } catch (error) {
+    return new NextResponse(`SERVER_DELETE_ERROR ${error}`, { status: 500 });
+  }
+}
