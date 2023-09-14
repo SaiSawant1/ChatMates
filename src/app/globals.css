@@ -79,4 +79,11 @@ body,
   body {
     @apply bg-background text-foreground;
   }
+
+  .server-side-bar {
+    @apply hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0;
+  }
+  .navigation-side-bar {
+    @apply hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0;
+  }
 }
