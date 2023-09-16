@@ -37,15 +37,24 @@ const CreateChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const params = useParams();
   const isModalOpen = isOpen && type === "createChannel";
-
+  const { channelType } = data;
   const form = useForm<ChannelFormValidator>({
     resolver: zodResolver(ChannelFormSchema),
 
     defaultValues: {
       name: "",
-      type: "TEXT",
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  React.useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", ChannelType.TEXT);
+    }
+  }, [channelType, form]);
+
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: ChannelFormValidator) => {
