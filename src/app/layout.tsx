@@ -20,8 +20,8 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" >
-        <body className={cn(openSans.className,"bg-white dark:bg-[#313338]")}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(openSans.className, "bg-white dark:bg-[#313338]")}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -29,7 +29,7 @@ export default function RootLayout({
             storageKey="chat-mates-theme"
           >
             {children}
-            <ModalProvider/>
+            <ModalProvider />
           </ThemeProvider>
         </body>
       </html>
