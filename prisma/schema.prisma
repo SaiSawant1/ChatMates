@@ -92,7 +92,7 @@ model Channel {
 
 model Message {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  Content   String
+  content   String
   fileUrl   String?
   memberId  String  @db.ObjectId
   member    Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -103,6 +103,9 @@ model Message {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([channelId])
+  @@index([memberId])
 }
 
 model Conversation {
@@ -113,9 +116,10 @@ model Conversation {
   memberTwoId String @db.ObjectId
   memberTwo   Member @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
 
-  diretMessages DirectMessage[]
+  directMessages DirectMessage[]
 
   @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
 }
 
 model DirectMessage {
@@ -133,4 +137,7 @@ model DirectMessage {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([memberId])
+  @@index([conversationId])
 }
