@@ -26,3 +26,11 @@ export const ChannelFormSchema = z.object({
 });
 
 export type ChannelFormValidator = z.infer<typeof ChannelFormSchema>;
+
+export const FileFormSchema = z.object({
+  fileUrl: z.string().min(1, {
+    message: "Attachment is required",
+  }),
+});
+
+export type FileFormSchemaValidator = z.infer<typeof FileFormSchema>;
