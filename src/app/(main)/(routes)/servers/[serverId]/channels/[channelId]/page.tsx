@@ -55,7 +55,7 @@ const ChannelIdPage: React.FC<ChannelIdPageProps> = async ({ params }) => {
           channelId: channel.id,
           serverId: channel.serverId,
         }}
-        paramsKey="channelId"
+        paramKey="channelId"
         paramValue={channel.id}
         chatId={channel.id}
       />
