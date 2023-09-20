@@ -1,8 +1,10 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
+import ChatMessages from "@/components/chat/chat-messages";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { Server } from "lucide-react";
 import { redirect } from "next/navigation";
 
 interface ChannelIdPageProps {
@@ -43,7 +45,20 @@ const ChannelIdPage: React.FC<ChannelIdPageProps> = async ({ params }) => {
         serverId={params.serverId}
         type="channel"
       />
-      <div className="flex-1">future messages</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        type="channel"
+        apiUrl={"/api/messages"}
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
+        paramsKey="channelId"
+        paramValue={channel.id}
+        chatId={channel.id}
+      />
       <ChatInput
         apiUrl="/api/socket/messages"
         name={channel.name}
