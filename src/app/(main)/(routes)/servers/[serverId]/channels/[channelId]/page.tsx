@@ -4,7 +4,6 @@ import ChatMessages from "@/components/chat/chat-messages";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
-import { Server } from "lucide-react";
 import { redirect } from "next/navigation";
 
 interface ChannelIdPageProps {
