@@ -1,11 +1,12 @@
 "use client";
-import {format} from "date-fns"
+import { format } from "date-fns";
 import { Member, Message, Profile } from "@prisma/client";
 import ChatWelcome from "@/components/chat/chat-welcome";
 import useChatQuery from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import ChatItem from "@/components/chat/chat-item";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -13,7 +14,7 @@ type MessageWithMemberWithProfile = Message & {
   };
 };
 
-const DATE_FORMAT="d MMM yyyy, HH:mm";
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 interface ChatMessagesProps {
   name: string;
@@ -39,6 +40,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
   socketQuery,
 }) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
   const { status, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useChatQuery({
       apiUrl,
@@ -46,6 +49,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       paramValue,
       queryKey,
     });
+
+  useChatSocket({ queryKey, addKey, updateKey });
 
   if (status === "loading") {
     return (
@@ -72,23 +77,22 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
     <div className="flex-1 flex flex-col py-4 overflow-y-auto">
       <div className="flex-1" />
       <ChatWelcome type={type} name={name} />
-      <div className=" flex-col-reverse mt-auto ">
+      <div className=" flex-col-reverse flex mt-auto ">
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
             {group.items.map((message: MessageWithMemberWithProfile) => (
-              <ChatItem 
-              currentMember={member}
-              member={message.member}
-              key={message.id}
-              id={message.id}
-              content={message.content}
-              fileUrl={message.fileUrl}
-              deleted={message.delete}
-              timestamp={format(new Date(message.createdAt),DATE_FORMAT)}
-              isUpdated={message.updatedAt!==message.createdAt}
-              socketQuery={socketQuery}
-              socketUrl={socketUrl}
-
+              <ChatItem
+                currentMember={member}
+                member={message.member}
+                key={message.id}
+                id={message.id}
+                content={message.content}
+                fileUrl={message.fileUrl}
+                deleted={message.delete}
+                timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                isUpdated={message.updatedAt !== message.createdAt}
+                socketQuery={socketQuery}
+                socketUrl={socketUrl}
               />
             ))}
           </Fragment>
