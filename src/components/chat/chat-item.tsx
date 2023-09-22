@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ChatItemProps {
   id: string;
@@ -56,8 +57,7 @@ const ChatItem = ({
   timestamp,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
-  const [isDeleting, setIsDeleting] = React.useState(false);
-
+  const { onOpen } = useModal();
   const fileType = fileUrl?.split(".").pop();
 
   const isAdmin = currentMember.role === MemberRole.ADMIN;
@@ -216,7 +216,15 @@ const ChatItem = ({
             </ActionToolTip>
           )}
           <ActionToolTip label="Delete">
-            <Trash className="cursor-pointer ml-auto w-4 h-4  text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition" />
+            <Trash
+              onClick={() =>
+                onOpen("deleteMessage", {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                })
+              }
+              className="cursor-pointer ml-auto w-4 h-4  text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+            />
           </ActionToolTip>
         </div>
       )}
