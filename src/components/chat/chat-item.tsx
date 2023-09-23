@@ -83,6 +83,7 @@ const ChatItem = ({
 
   const isLoading = form.formState.isSubmitting;
 
+  //update message (editing message)
   const onSubmit = async (values: formSchemaValidator) => {
     try {
       const url = qs.stringifyUrl({

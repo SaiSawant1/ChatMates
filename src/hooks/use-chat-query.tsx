@@ -31,6 +31,7 @@ const useChatQuery = ({
     const res = await fetch(url);
     return res.json();
   };
+  //tan stack fetching data which basically is infinite scroll
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
       queryKey: [queryKey],
