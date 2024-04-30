@@ -1,7 +1,7 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
 import ChatMessages from "@/components/chat/chat-messages";
-import { useGetOrCreateConversation } from "@/lib/conversation";
+import { GetOrCreateConversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
@@ -30,9 +30,9 @@ const MemberIdPage: React.FC<MemberIdPageProps> = async ({ params }) => {
     return redirect("/");
   }
 
-  const conversation = await useGetOrCreateConversation(
+  const conversation = await GetOrCreateConversation(
     currentMember.id,
-    params.memberId
+    params.memberId,
   );
 
   if (!conversation) return redirect(`/servers/${params.serverId}`);
